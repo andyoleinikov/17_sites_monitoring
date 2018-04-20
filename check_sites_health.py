@@ -21,12 +21,12 @@ def is_server_respond_with_200(url):
 
 def get_domain_expiration_date(domain_name):
     try:
-        w = whois.whois(domain_name)
+        whois_info = whois.whois(domain_name)
     except whois.parser.PywhoisError as e:
         return None
-    if type(w.expiration_date) == list:
-        w.expiration_date = w.expiration_date[0]
-    return w.expiration_date
+    if type(whois_info.expiration_date) == list:
+        whois_info.expiration_date = whois_info.expiration_date[0]
+    return whois_info.expiration_date
 
 
 def get_days_till_expiration(domain_expiration_date):
@@ -34,6 +34,17 @@ def get_days_till_expiration(domain_expiration_date):
         domain_expiration_date - datetime.now()
     ).days
     return days_till_expiration
+
+
+def print_domain_expiration_info(days_till_expiration):
+    min_days_till_expiration = 30
+    days_if_expired = 0
+    if days_till_expiration > min_days_till_expiration:
+        print('Domain expires in more than 30 days')
+    elif days_till_expiration < days_if_expired:
+        print('Domain is already expired')
+    else:
+        print('Domain expires in %s days' % (days_till_expiration))
 
 
 if __name__ == '__main__':
@@ -57,9 +68,5 @@ if __name__ == '__main__':
             print('Domain name not found')
             continue
 
-        min_days_till_expiration = 30
         days_till_expiration = get_days_till_expiration(domain_expiration_date)
-        if days_till_expiration > min_days_till_expiration:
-            print('Domain expires in more than 30 days')
-        else:
-            print('Domain expires in %s days' % (days_till_expiration))
+        print_domain_expiration_info(days_till_expiration)

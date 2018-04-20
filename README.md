@@ -20,7 +20,7 @@ Server is up
 Domain expires in more than 30 days
 You are checking: https://kenterior.com
 Server is down
-Domain expires in -67 days
+Domain is already expired
 You are checking: https://googlemoogle.com
 Server is down
 Domain expires in more than 30 days
