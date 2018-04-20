@@ -29,22 +29,25 @@ def get_domain_expiration_date(domain_name):
     return whois_info.expiration_date
 
 
-def get_days_till_expiration(domain_expiration_date):
-    days_till_expiration = (
-        domain_expiration_date - datetime.now()
-    ).days
-    return days_till_expiration
+def is_domain_paid(domain_expiration_date):
+    if domain_expiration_date:
+        min_days_till_expiration = 30
+        days_till_expiration = (
+            domain_expiration_date - datetime.now()
+        ).days
+        if days_till_expiration > min_days_till_expiration:
+            return True
 
 
-def print_domain_expiration_info(days_till_expiration):
-    min_days_till_expiration = 30
-    days_if_expired = 0
-    if days_till_expiration > min_days_till_expiration:
-        print('Domain expires in more than 30 days')
-    elif days_till_expiration < days_if_expired:
-        print('Domain is already expired')
+def print_domain_info(expiration_is_soon, server_is_ok):
+    if server_is_ok:
+        print('Server is up')
     else:
-        print('Domain expires in %s days' % (days_till_expiration))
+        print('Server is down')
+    if domain_is_paid:
+        print('Domain is paid for the next month')
+    else:
+        print('Domain is not paid for the next month')
 
 
 if __name__ == '__main__':
@@ -54,19 +57,9 @@ if __name__ == '__main__':
     urls = load_urls4check(filepath)
     if urls is None:
         sys.exit('Wrong file')
-
     for url in urls:
         print('You are checking: %s' % url)
-
-        if is_server_respond_with_200(url):
-            print('Server is up')
-        else:
-            print('Server is down')
-
         domain_expiration_date = get_domain_expiration_date(url)
-        if not domain_expiration_date:
-            print('Domain name not found')
-            continue
-
-        days_till_expiration = get_days_till_expiration(domain_expiration_date)
-        print_domain_expiration_info(days_till_expiration)
+        domain_is_paid = is_domain_paid(domain_expiration_date)
+        server_is_ok = is_server_respond_with_200(url)
+        print_domain_info(domain_is_paid, server_is_ok)

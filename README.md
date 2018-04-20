@@ -17,16 +17,13 @@ $ python check_sites_health.py <path to file>
 $ python check_sites_health.py domains.txt
 You are checking: https://google.com
 Server is up
-Domain expires in more than 30 days
-You are checking: https://kenterior.com
-Server is down
-Domain is already expired
+Domain is paid for the next month
 You are checking: https://googlemoogle.com
 Server is down
-Domain expires in more than 30 days
+Domain is paid for the next month
 You are checking: https://googlegooglemoogle.com
 Server is down
-Domain name not found
+Domain is not paid for the next month
 
 ```
 
